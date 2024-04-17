@@ -9,6 +9,7 @@ import type MarkdownIt from "markdown-it";
 import {LoaderResolver} from "./dataloader.js";
 import {visitMarkdownFiles} from "./files.js";
 import {formatIsoDate, formatLocaleDate} from "./format.js";
+import type {FrontMatter} from "./frontMatter.js";
 import {createMarkdownIt, parseMarkdownMetadata} from "./markdown.js";
 import {isAssetPath, parseRelativeUrl, resolvePath} from "./path.js";
 import {resolveTheme} from "./theme.js";
@@ -40,6 +41,11 @@ export interface Script {
   type: string | null;
 }
 
+/**
+ * A function that generates a page fragment such as head, header or footer.
+ */
+type PageFragmentFunction = (meta: FrontMatter & {title: string | null; path: string}) => string;
+
 export interface Config {
   root: string; // defaults to docs
   output: string; // defaults to dist
@@ -49,9 +55,9 @@ export interface Config {
   pages: (Page | Section<Page>)[];
   pager: boolean; // defaults to true
   scripts: Script[]; // defaults to empty array
-  head: string | null; // defaults to null
-  header: string | null; // defaults to null
-  footer: string | null; // defaults to “Built with Observable on [date].”
+  head: string | PageFragmentFunction | null; // defaults to null
+  header: string | PageFragmentFunction | null; // defaults to null
+  footer: string | PageFragmentFunction | null; // defaults to “Built with Observable on [date].”
   toc: TableOfContents;
   style: null | Style; // defaults to {theme: ["light", "dark"]}
   deploy: null | {workspace: string; project: string};
@@ -161,9 +167,9 @@ export function normalizeConfig(spec: any = {}, defaultRoot = "docs", watchPath?
   if (sidebar !== undefined) sidebar = Boolean(sidebar);
   pager = Boolean(pager);
   scripts = Array.from(scripts, normalizeScript);
-  head = stringOrNull(head);
-  header = stringOrNull(header);
-  footer = stringOrNull(footer);
+  head = pageFragment(head);
+  header = pageFragment(header);
+  footer = pageFragment(footer);
   toc = normalizeToc(toc);
   deploy = deploy ? {workspace: String(deploy.workspace).replace(/^@+/, ""), project: String(deploy.project)} : null;
   search = Boolean(search);
@@ -279,6 +285,10 @@ export function mergeStyle(
     : theme === undefined
     ? defaultStyle
     : {theme};
+}
+
+function pageFragment(spec: unknown) {
+  return typeof spec === "function" ? spec : stringOrNull(spec);
 }
 
 export function stringOrNull(spec: unknown): string | null {

@@ -162,6 +162,8 @@ An HTML fragment to add to the header. Defaults to the empty string.
 
 An HTML fragment to add to the footer. Defaults to “Built with Observable.”
 
+head, header and footer can be specified as strings, or as functions that receive the page’s meta data (path, title and front matter values) as the first argument, and return a string.
+
 ## scripts
 
 Additional scripts to add to the head, such as for analytics. Unlike the **head** option, this allows you to reference a local script in the source root.

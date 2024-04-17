@@ -332,13 +332,14 @@ export function parseMarkdown(input: string, options: ParseOptions): MarkdownPag
   const context: ParseContext = {code, startLine: 0, currentLine: 0, path};
   const tokens = md.parse(content, context);
   const body = md.renderer.render(tokens, md.options, context); // Note: mutates code!
+  const title = data.title !== undefined ? data.title : findTitle(tokens);
   return {
-    head: getHtml("head", data, options),
-    header: getHtml("header", data, options),
+    head: getHtml("head", data, title, options),
+    header: getHtml("header", data, title, options),
     body,
-    footer: getHtml("footer", data, options),
+    footer: getHtml("footer", data, title, options),
     data,
-    title: data.title !== undefined ? data.title : findTitle(tokens),
+    title,
     style: getStyle(data, options),
     code
   };
@@ -360,12 +361,15 @@ export function parseMarkdownMetadata(input: string, options: ParseOptions): Pic
 function getHtml(
   key: "head" | "header" | "footer",
   data: FrontMatter,
+  title: string | null,
   {path, [key]: defaultValue}: ParseOptions
 ): string | null {
   return data[key] !== undefined
     ? data[key]
       ? String(data[key])
       : null
+    : typeof defaultValue === "function"
+    ? defaultValue({...data, path, title})
     : defaultValue != null
     ? rewriteHtmlPaths(defaultValue, path)
     : null;

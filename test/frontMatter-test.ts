@@ -84,7 +84,7 @@ describe("normalizeFrontMatter(spec)", () => {
     assert.deepStrictEqual(normalizeFrontMatter({sql: {foo: []}}), {sql: {foo: ""}});
     assert.deepStrictEqual(normalizeFrontMatter({sql: {foo: {toString: () => "bar"}}}), {sql: {foo: "bar"}});
   });
-  it("ignores unknown properties", () => {
-    assert.deepStrictEqual(normalizeFrontMatter({foo: 42}), {});
+  it("passes unknown properties unchanged", () => {
+    assert.deepStrictEqual(normalizeFrontMatter({foo: 42}), {foo: 42});
   });
 });

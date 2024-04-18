@@ -44,7 +44,7 @@ export interface Script {
 /**
  * A function that generates a page fragment such as head, header or footer.
  */
-type PageFragmentFunction = (meta: FrontMatter & {title: string | null; path: string}) => string;
+type PageFragmentFunction = (meta: FrontMatter & {path: string}) => string;
 
 export interface Config {
   root: string; // defaults to docs
@@ -55,9 +55,9 @@ export interface Config {
   pages: (Page | Section<Page>)[];
   pager: boolean; // defaults to true
   scripts: Script[]; // defaults to empty array
-  head: string | PageFragmentFunction | null; // defaults to null
-  header: string | PageFragmentFunction | null; // defaults to null
-  footer: string | PageFragmentFunction | null; // defaults to “Built with Observable on [date].”
+  head: PageFragmentFunction | string | null; // defaults to null
+  header: PageFragmentFunction | string | null; // defaults to null
+  footer: PageFragmentFunction | string | null; // defaults to “Built with Observable on [date].”
   toc: TableOfContents;
   style: null | Style; // defaults to {theme: ["light", "dark"]}
   deploy: null | {workspace: string; project: string};

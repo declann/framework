@@ -15,7 +15,6 @@ export interface FrontMatter {
   draft?: boolean;
   sidebar?: boolean;
   sql?: {[key: string]: string};
-  [key: string]: any;
 }
 
 export function readFrontMatter(input: string): {content: string; data: FrontMatter} {
@@ -34,7 +33,7 @@ export function readFrontMatter(input: string): {content: string; data: FrontMat
 export function normalizeFrontMatter(spec: any = {}): FrontMatter {
   const frontMatter: FrontMatter = {};
   if (spec == null || typeof spec !== "object") return frontMatter;
-  const {title, sidebar, toc, index, keywords, draft, sql, head, header, footer, style, theme, ...rest} = spec;
+  const {title, sidebar, toc, index, keywords, draft, sql, head, header, footer, style, theme} = spec;
   if (title !== undefined) frontMatter.title = stringOrNull(title);
   if (sidebar !== undefined) frontMatter.sidebar = Boolean(sidebar);
   if (toc !== undefined) frontMatter.toc = normalizeToc(toc);
@@ -47,7 +46,7 @@ export function normalizeFrontMatter(spec: any = {}): FrontMatter {
   if (footer !== undefined) frontMatter.footer = stringOrNull(footer);
   if (style !== undefined) frontMatter.style = stringOrNull(style);
   if (theme !== undefined) frontMatter.theme = normalizeTheme(theme);
-  return {...frontMatter, ...rest};
+  return frontMatter;
 }
 
 function normalizeToc(spec: unknown): {show?: boolean; label?: string} {

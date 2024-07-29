@@ -121,6 +121,21 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
 ```js
 import * as themes from "npm:vega-themes";
 
+import * as vega from "npm:vega";
+import * as vegaLite from "npm:vega-lite";
+import * as vegaLiteApi from "npm:vega-lite-api";
+import * as tooltip from "npm:vega-tooltip";
+const vl = vegaLiteApi.register(vega, vegaLite, {
+  init: (view) => {
+    view.tooltip(new tooltip.Handler().call);
+
+    // another suggestion from https://observablehq.com/@vega/vega-lite-api-v5#vl
+    if (view.container()) view.container().style["overflow-x"] = "auto";
+  }
+});
+
+
+
 const chart = await vl.render({
   tooltip: true,
   spec: {

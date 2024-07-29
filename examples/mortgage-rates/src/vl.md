@@ -119,14 +119,21 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
     <span id="s" style="flex-grow: 1;">
 
 ```js
+import * as themes from "npm:vega-themes";
+
 const chart = await vl.render({
+  tooltip: true,
   spec: {
+    config: {
+      ...(dark ? themes.dark : themes.default),
+      background: "transparent"
+    },
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": -1,
     "height": 250,
     "autosize": {"type": "fit", "contains": "padding"},
     "data": {"url": "https://vega.github.io/vega-lite/data/cars.json"},
-    "mark": "bar",
+    "mark": {type:"bar", tooltip:true},
     "encoding": {
       "x": {"field": "Cylinders"},
       "y": {"aggregate": "count", "title": "Number of cars"}

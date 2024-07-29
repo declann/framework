@@ -16,13 +16,13 @@ display(
       height: 250,
       autosize: {type: "fit", contains: "padding"},
       data: {url: "https://vega.github.io/vega-lite/data/cars.json"},
-      mark: "bar",
+      mark: {type: "bar", tooltip:true},
       encoding: {
         x: {field: "Cylinders"},
         y: {aggregate: "count", title: "Number of cars"}
       }
     }
-  })
+  }, {hover:true, tooltip: true})
 );
 ```
 

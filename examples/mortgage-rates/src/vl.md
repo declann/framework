@@ -105,6 +105,10 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
   }
 }
 
+#s div {
+  height: 100%;
+}
+
 </style>
 
 <div class="grid grid-cols-2-3" style="margin-top: 2rem;">
@@ -112,7 +116,7 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
   <div class="card">${frmCard(15, pmms)}</div>
   <div class="card grid-colspan-2 grid-rowspan-2" style="display: flex; flex-direction: column;">
     <h2>Rates ${startEnd === defaultStartEnd ? "over the past year" : startEnd.map((d) => d.toLocaleDateString("en-US")).join("–")}</h2><br>
-    <span style="flex-grow: 1;">
+    <span id="s" style="flex-grow: 1;">
 
 ```js
 const chart = await vl.render({
@@ -131,7 +135,7 @@ const chart = await vl.render({
 });
 
 display(resize((width, height) => {
-  debugger;
+  //debugger;
   chart.value.width(Math.min(960 - 16 * 2, width));
   chart.value.height(Math.max(height,100));
   chart.value.run();

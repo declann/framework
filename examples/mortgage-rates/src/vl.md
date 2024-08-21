@@ -1,5 +1,17 @@
 # vl
 
+<script src="https://unpkg.com/swapy/dist/swapy.min.js"></script>
+
+```js
+const swapy = Swapy.createSwapy(document.getElementById('container'))
+
+window.swapy = swapy
+```
+
+```js
+4
+```
+
 ```js
 const pmms = FileAttachment("data/pmms.csv").csv({typed: true});
 const tidy = pmms.then((pmms) => pmms.flatMap(({date, pmms30, pmms15}) => [{date, rate: pmms30, type: "30Y FRM"}, {date, rate: pmms15, type: "15Y FRM"}]));
@@ -111,9 +123,9 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
 
 </style>
 
-<div class="grid grid-cols-2-3" style="margin-top: 2rem;">
-  <div class="card">${frmCard(30, pmms)}</div>
-  <div class="card">${frmCard(15, pmms)}</div>
+<div class="grid grid-cols-2-3" style="margin-top: 2rem;" id="container">
+  <div class="card" data-swapy-slot="a"><div data-swapy-item="item1">${frmCard(30, pmms)}</div></div>
+  <div class="card" data-swapy-slot="b"><div data-swapy-item="item2">${frmCard(15, pmms)}</div></div>
   <div class="card grid-colspan-2 grid-rowspan-2" style="display: flex; flex-direction: column;">
     <h2>Rates ${startEnd === defaultStartEnd ? "over the past year" : startEnd.map((d) => d.toLocaleDateString("en-US")).join("–")}</h2><br>
     <span id="s" style="flex-grow: 1;">

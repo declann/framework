@@ -1,5 +1,12 @@
 # Primary mortgage market survey
 
+<div style="padding:20px;border:13px solid red; border-radius:29px"><p>Early example of using <a href="https://swapy.tahazsh.com/">Swapy</a>, cards here are draggable (but there are layout and interaction bugs).</p>
+<p>
+It works nicely for some cards, and is very easy to integrate (load script, apply it to a container, and set `data-swapy-slot`s and `data-swapy-item`s to some identifiers)
+
+Video about Swapy: https://www.youtube.com/watch?v=gaNLnuwoFRI&t=308s
+</p></div>
+
 <script src="https://unpkg.com/swapy/dist/swapy.min.js"></script>
 
 ```js

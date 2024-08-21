@@ -82,14 +82,16 @@ export default {
         {name: "ZIP", path: "/lib/zip"}
       ]
     },
+    {name: "Converting notebooks", path: "/convert"},
     {name: "Contributing", path: "/contributing", pager: false}
   ],
   base: "/framework",
-  head: `<link rel="apple-touch-icon" href="/observable.png">
+  head: `<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&display=swap" crossorigin>
+<link rel="apple-touch-icon" href="/observable.png">
 <link rel="icon" type="image/png" href="/observable.png" sizes="32x32">${
     process.env.CI
       ? `
-<script type="module" async src="https://events.observablehq.com/client.js?pageLoad"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9B88TP6PKQ"></script>
 <script>window.dataLayer=window.dataLayer||[];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js',new Date());\ngtag('config','G-9B88TP6PKQ');</script>`
       : ""

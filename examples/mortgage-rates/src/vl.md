@@ -3,7 +3,7 @@
 <script src="https://unpkg.com/swapy/dist/swapy.min.js"></script>
 
 ```js
-const swapy = Swapy.createSwapy(document.getElementById('container'))
+const swapy = Swapy.createSwapy(document.getElementById('observablehq-center'))
 
 window.swapy = swapy
 ```

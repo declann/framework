@@ -1,5 +1,11 @@
 # Primary mortgage market survey
 
+<script src="https://unpkg.com/swapy/dist/swapy.min.js"></script>
+
+```js
+const swapy = Swapy.createSwapy(document.getElementById('observablehq-center'))
+```
+
 ```js
 const pmms = FileAttachment("data/pmms.csv").csv({typed: true});
 const tidy = pmms.then((pmms) => pmms.flatMap(({date, pmms30, pmms15}) => [{date, rate: pmms30, type: "30Y FRM"}, {date, rate: pmms15, type: "15Y FRM"}]));
@@ -108,27 +114,30 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
 </style>
 
 <div class="grid grid-cols-2-3" style="margin-top: 2rem;">
-  <div class="card">${frmCard(30, pmms)}</div>
-  <div class="card">${frmCard(15, pmms)}</div>
-  <div class="card grid-colspan-2 grid-rowspan-2" style="display: flex; flex-direction: column;">
-    <h2>Rates ${startEnd === defaultStartEnd ? "over the past year" : startEnd.map((d) => d.toLocaleDateString("en-US")).join("–")}</h2><br>
-    <span style="flex-grow: 1;">${resize((width, height) =>
-      Plot.plot({
-        width,
-        height,
-        y: {grid: true, label: "rate (%)"},
-        color,
-        marks: [
-          Plot.lineY(tidy.filter((d) => startEnd[0] <= d.date && d.date < startEnd[1]), {x: "date", y: "rate", stroke: "type", curve: "step", tip: true, markerEnd: true})
-        ]
-      })
-    )}</span>
+  <div class="card" data-swapy-slot="card1"><div data-swapy-item="item1">${frmCard(30, pmms)}</div></div>
+  <div class="card" data-swapy-slot="card2"><div data-swapy-item="item2">${frmCard(15, pmms)}</div></div>
+  <div class="card grid-colspan-2 grid-rowspan-2" data-swapy-slot="card3" style="display: flex; flex-direction: column;">
+    <div style="flex-grow: 1; width:100%; height:100%" data-swapy-item="item3">
+      <h2>Rates ${startEnd === defaultStartEnd ? "over the past year" : startEnd.map((d) => d.toLocaleDateString("en-US")).join("–")}</h2><br>
+      <span style="">${resize((width, height) =>
+        Plot.plot({
+          width,
+          height:300, // hardcoding because my new div broke something
+          y: {grid: true, label: "rate (%)"},
+          color,
+          marks: [
+            Plot.lineY(tidy.filter((d) => startEnd[0] <= d.date && d.date < startEnd[1]), {x: "date", y: "rate", stroke: "type", curve: "step", tip: true, markerEnd: true})
+          ]
+        })
+      )}</span>
+    </div>
   </div>
 </div>
 
 <div class="grid">
-  <div class="card">
-    <h2>Rates over all time (${d3.extent(pmms, (d) => d.date.getUTCFullYear()).join("–")})</h2>
+  <div class="card" data-swapy-slot="card4">
+    <div data-swapy-item="card4">
+    <h2><span style="color:red; font-weight:bold">DN: This swaps but interaction breaks</span> Rates over all time (${d3.extent(pmms, (d) => d.date.getUTCFullYear()).join("–")})</h2>
     <h3>Click or drag to zoom</h3><br>
     ${resize((width) =>
       Plot.plot({
@@ -168,5 +177,6 @@ Each week, [Freddie Mac](https://www.freddiemac.com/pmms/about-pmms.html) survey
         ]
       })
     )}
+    </div>
   </div>
 </div>
